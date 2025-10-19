@@ -36,8 +36,8 @@ def download_from_drive(file_id, output):
     gdown.download(url, output, quiet=False)
 
 # Replace the below IDs with your own Drive file IDs
-MODEL_FILE_ID = "1RDymPSGEf4VcmxrWj5HHV5F0mPdmb2it"        # <-- put your model ID here
-PREPROCESSOR_FILE_ID = "1A0wY35G3Pqjxc8owRiJGhEhV-DP2zHYI"  # <-- (optional) preprocessor ID
+MODEL_FILE_ID = "1McK4hvhXzrzU9UojDFCrOuTGFlOwxrWl"        # <-- put your model ID here
+PREPROCESSOR_FILE_ID = "1jYoqhOXPMAdAhtUHhdEf6MuZJMCf1a1q"  # <-- (optional) preprocessor ID
 
 # Download files if missing
 if not os.path.exists("rf_model.pkl"):
@@ -179,11 +179,81 @@ if input_mode == "Manual Entry":
             y_pred = model.predict(X_transformed)
             y_prob = model.predict_proba(X_transformed)[:, 1]
 
-            result = "✅ Customer will **Renew** the policy." if y_pred[0] == 1 else "❌ Customer will **Not Renew** the policy."
+            result = " Customer will **Renew** the policy." if y_pred[0] == 1 else " Customer will **Not Renew** the policy."
             st.success(result)
             st.metric(label="Renewal Probability", value=f"{y_prob[0]*100:.2f}%")
         except Exception as e:
             st.error(f"Prediction failed: {e}")
+
+    # ----------------------------------------------------------
+    # What-If Analysis: Sensitivity Simulation
+    # ----------------------------------------------------------
+    st.markdown("---")
+    st.subheader(" What-If Analysis — Explore Feature Impact")
+
+    with st.expander("Try adjusting key features to see impact"):
+        feature_to_change = st.selectbox(
+            "Select feature to modify:",
+            options=[
+                "perc_premium_paid_by_cash_credit",
+                "no_of_premiums_paid",
+                "late_ratio",
+                "premium",
+                "late_payment_score",
+                "application_underwriting_score"
+            ],
+            index=0
+        )
+
+        # Copy original input
+        whatif_data = input_data.copy()
+
+        # Compute dependent features before simulation
+        if "total_late_payments" in whatif_data.columns and "no_of_premiums_paid" in whatif_data.columns:
+            whatif_data["late_ratio"] = whatif_data["total_late_payments"] / (whatif_data["no_of_premiums_paid"] + 1)
+
+        # Slider range based on feature type
+        current_value = float(whatif_data[feature_to_change].iloc[0])
+        if feature_to_change in ["perc_premium_paid_by_cash_credit", "application_underwriting_score"]:
+            new_value = st.slider(f"Adjust {feature_to_change}", 0.0, 100.0, current_value, step=1.0)
+        elif feature_to_change in ["late_ratio"]:
+            new_value = st.slider(f"Adjust {feature_to_change}", 0.0, 5.0, current_value, step=0.1)
+        elif feature_to_change in ["premium", "Income"]:
+            new_value = st.slider(f"Adjust {feature_to_change}", 0.0, current_value * 2, current_value, step=100.0)
+        else:
+            new_value = st.slider(f"Adjust {feature_to_change}", 0.0, current_value * 3, current_value, step=1.0)
+
+        whatif_data[feature_to_change] = new_value
+
+        # Recalculate dependent fields
+        if feature_to_change in [
+            "Count_3-6_months_late", "Count_6-12_months_late",
+            "Count_more_than_12_months_late", "no_of_premiums_paid"
+        ]:
+            whatif_data["total_late_payments"] = (
+                whatif_data["Count_3-6_months_late"]
+                + whatif_data["Count_6-12_months_late"]
+                + whatif_data["Count_more_than_12_months_late"]
+            )
+            whatif_data["late_payment_score"] = (
+                whatif_data["Count_3-6_months_late"] * 1
+                + whatif_data["Count_6-12_months_late"] * 2
+                + whatif_data["Count_more_than_12_months_late"] * 3
+            )
+            whatif_data["late_ratio"] = whatif_data["total_late_payments"] / (whatif_data["no_of_premiums_paid"] + 1)
+
+        # Re-predict with modified input
+        try:
+            X_transformed_whatif = preprocessor.transform(whatif_data)
+            new_prob = model.predict_proba(X_transformed_whatif)[:, 1][0]
+            st.metric(
+                label=f"Renewal Probability after changing '{feature_to_change}'",
+                value=f"{new_prob*100:.2f}%",
+                delta=f"{(new_prob - y_prob[0]) * 100:+.2f}%"
+            )
+        except Exception as e:
+            st.warning(f"Could not compute What-If impact: {e}")
+
 
 # ----------------------------------------------------------
 # CSV Upload Mode
