@@ -73,12 +73,12 @@ st.sidebar.success("Model and Preprocessor loaded successfully!")
 # Helper: Derived Feature Computation
 # ----------------------------------------------------------
 def add_derived_features(df):
-    """Adds derived columns expected by the model."""
-    # 1. Age in years
+    """Safely adds all features required by the model, even if dataset has only base columns."""
+
+    # Always derive from base inputs if they exist
     if "age_in_days" in df.columns:
         df["age_in_years"] = (df["age_in_days"] / 365).astype(int)
 
-    # 2. Total late payments
     if all(c in df.columns for c in [
         "Count_3-6_months_late",
         "Count_6-12_months_late",
@@ -89,18 +89,24 @@ def add_derived_features(df):
             + df["Count_6-12_months_late"]
             + df["Count_more_than_12_months_late"]
         )
-
-    # 3. Late payment score
-    if all(c in df.columns for c in [
-        "Count_3-6_months_late",
-        "Count_6-12_months_late",
-        "Count_more_than_12_months_late"
-    ]):
         df["late_payment_score"] = (
             df["Count_3-6_months_late"] * 1
             + df["Count_6-12_months_late"] * 2
             + df["Count_more_than_12_months_late"] * 3
         )
+    else:
+        df["total_late_payments"] = 0
+        df["late_payment_score"] = 0
+
+    # Derived fields for compatibility (even if not in original CSV)
+    df["premium_to_income"] = df.get("premium", 0) / (df.get("Income", 1))
+    df["late_ratio"] = df.get("late_payment_score", 0) / (df.get("no_of_premiums_paid", 1))
+    df["age_bucket_tree"] = pd.cut(
+        df.get("age_in_days", 0) / 365,
+        bins=[0, 30, 40, 50, 60, 70, 120],
+        labels=["<30", "31–40", "41–50", "51–60", "61–70", "70+"],
+        include_lowest=True
+    ).astype(str)
 
     return df
 
