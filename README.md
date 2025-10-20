@@ -35,8 +35,8 @@ Group10-insurance_renewal_app/
 │
 ├── group10_streamlitApp.py # Main Streamlit app file
 ├── pipeline_model.py # Model training & preprocessing pipeline
-├        rf_model.pkl # Trained Random Forest model (in google drive)
-├        preprocessor.pkl # Preprocessing pipeline (scaler, encoder) (in google drive)
+├── rf_model.pkl # Trained Random Forest model (in google drive)
+├── preprocessor.pkl # Preprocessing pipeline (scaler, encoder)(in google drive)
 ├── requirements.txt # Python dependencies
 ├── README.md # Deployment documentation (this file)
 └── data/ # Sample input datasets
@@ -92,5 +92,5 @@ Add requirements.txt under Advanced Settings
 Click Deploy
 
 ### Step 4: Access App
-Once deployed successfully, you’ll get a public URL such as:
-https://group10-insurancerenewalapp-xxxxxx.streamlit.app
+Once deployed successfully, you’ll get a public URL:
+https://group10-insurancerenewalapp-group10.streamlit.app/
