@@ -38,7 +38,6 @@ Group10-insurance_renewal_app/
 ├── README.md                         # Project documentation (deployment guide, challenges, structure)
 ├── requirements.txt                  # Python dependencies for Streamlit Cloud
 │
-├
 ├── ProjectFiles/                     # Main project folder containing notebooks, models, and datasets
 │   │
 │   ├── Capstone_Project_Insurance_Renewal.ipynb   # Main analysis notebook (EDA + modeling)
@@ -47,10 +46,8 @@ Group10-insurance_renewal_app/
 │   ├── pipeline_model.py                          # Python version of model training script
 │   ├── train_ZoGVYWq.csv                          # Training dataset
 │   ├── test_66516Ee.csv                           # Testing dataset
-│   └── rf_model.pkl                               # Trained Random Forest model (hosted on Google Drive)
-│
-└── preprocessor.pkl                   # Preprocessing pipeline (hosted on Google Drive)
-
+│   ├── rf_model.pkl                               # Trained Random Forest model (hosted on Google Drive)
+│   └── preprocessor.pkl                           # Preprocessing pipeline (hosted on Google Drive)
 
 
 Note: The model file rf_model.pkl was too large to be hosted on Streamlit Cloud.
