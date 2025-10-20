@@ -94,8 +94,9 @@ git push origin main
 ```
 
 ### Step 2: Go to Streamlit Cloud
-```
+
 Visit https://share.streamlit.io  
+```
 Log in using your GitHub account 
 Click “Create app” 
 Select repository: Group10-insurance_renewal_app 
@@ -111,7 +112,6 @@ Click Deploy
 ```
 
 ### Step 4: Access App
-```
+
 Once deployed successfully, you’ll get a public URL: 
 https://group10-insurancerenewalapp-group10.streamlit.app/ 
-```
