@@ -60,48 +60,58 @@ Therefore, gdown was used to download the model dynamically from Google Drive at
 ## Local Setup Instructions
 
 ### 1. Clone the Repository
-
-git clone https://github.com/karthikraogg/Group10-insurance_renewal_app.git
-cd Group10-insurance_renewal_app
-
+```
+git clone https://github.com/karthikraogg/Group10-insurance_renewal_app.git 
+cd Group10-insurance_renewal_app 
+```
 
 ### 2. Create a Virtual Environment
-
-python -m venv venv
-source venv/bin/activate       # For Mac/Linux
-venv\Scripts\activate          # For Windows
+```
+python -m venv venv 
+source venv/bin/activate       # For Mac/Linux 
+venv\Scripts\activate          # For Windows 
+```
 
 ### 3. Install Dependencies
-
-pip install -r requirements.txt
+```
+pip install -r requirements.txt 
+```
 
 ### 4. Run Locally
-
-streamlit run group10_streamlitApp.py
-
+```
+streamlit run group10_streamlitApp.py 
+```
 -----------------
 
 ## Deployment on Streamlit Cloud
 
-### Step 1: Push code to GitHub
-git add .
-git commit -m "Added latest Streamlit app"
-git pull --rebase origin main
-git push origin main
+### Step 1: Push code to GitHub 
+```
+git add . 
+git commit -m "Added latest Streamlit app" 
+git pull --rebase origin main 
+git push origin main 
+```
 
 ### Step 2: Go to Streamlit Cloud
-Visit https://share.streamlit.io
-Log in using your GitHub account
-Click “Create app”
-Select repository: Group10-insurance_renewal_app
-Branch: main
-Main file path: group10_streamlitApp.py
+```
+Visit https://share.streamlit.io  
+Log in using your GitHub account 
+Click “Create app” 
+Select repository: Group10-insurance_renewal_app 
+Branch: main 
+Main file path: group10_streamlitApp.py 
+```
 
 ### Step 3: Configure
-Python version: 3.12
-Add requirements.txt under Advanced Settings
-Click Deploy
+```
+Python version: 3.12 
+Add requirements.txt under Advanced Settings 
+Click Deploy 
+```
 
 ### Step 4: Access App
-Once deployed successfully, you’ll get a public URL:
-https://group10-insurancerenewalapp-group10.streamlit.app/
+```
+Once deployed successfully, you’ll get a public URL: 
+https://group10-insurancerenewalapp-group10.streamlit.app/ 
+```
