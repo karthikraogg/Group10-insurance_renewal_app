@@ -30,16 +30,28 @@ The app predicts whether a customer will **renew** their insurance policy based 
 
 ---
 
-## Folder Structure
+## 📁 Folder Structure
+
 Group10-insurance_renewal_app/
 │
-├── group10_streamlitApp.py # Main Streamlit app file
-├── pipeline_model.py # Model training & preprocessing pipeline
-├── rf_model.pkl # Trained Random Forest model (in google drive)
-├── preprocessor.pkl # Preprocessing pipeline (scaler, encoder)(in google drive)
-├── requirements.txt # Python dependencies
-├── README.md # Deployment documentation (this file)
-└── data/ # Sample input datasets
+├── group10_streamlitApp.py           # Main Streamlit deployment app
+├── README.md                         # Project documentation (deployment guide, challenges, structure)
+├── requirements.txt                  # Python dependencies for Streamlit Cloud
+│
+├
+├── ProjectFiles/                     # Main project folder containing notebooks, models, and datasets
+│   │
+│   ├── Capstone_Project_Insurance_Renewal.ipynb   # Main analysis notebook (EDA + modeling)
+│   ├── group10_streamlitApp.ipynb                 # Streamlit interface draft in Jupyter
+│   ├── pipeline_model.ipynb                       # Model training and preprocessing pipeline
+│   ├── pipeline_model.py                          # Python version of model training script
+│   ├── train_ZoGVYWq.csv                          # Training dataset
+│   ├── test_66516Ee.csv                           # Testing dataset
+│   └── rf_model.pkl                               # Trained Random Forest model (hosted on Google Drive)
+│
+└── preprocessor.pkl                   # Preprocessing pipeline (hosted on Google Drive)
+
+
 
 Note: The model file rf_model.pkl was too large to be hosted on Streamlit Cloud.
 Since its size (~200 MB) exceeded GitHub’s 100 MB file limit, the model could not be committed to the repository.
